@@ -11,6 +11,8 @@ h1, p, textarea {
 }
 textarea {
 	font-size: 25px;
+	width: 500px;
+	height: 250px;
 }
 h1 {
     color: #333333;
@@ -32,7 +34,7 @@ body {
 <div><h1>Blackjack!</h1></div>
 <button id = "Begin">Begin</button><br>
 <textarea id="box">Click Begin to play!</textarea><br>
-<textarea id="debug">...</textarea>
+<textarea id="debug">debug...</textarea><br>
 </body>
 
 
@@ -43,26 +45,29 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-var cards = [], player_cards = [];
+var suits = ['♠', '♥', '♣', '♦'];
+var ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
+var deck = [];
 
-var a, b;
-for (a = 1; a < 14; a++) {
-	for (b = 1; b < 5; b++) {
-		cards.push([a, b])
+for (var a = 0; a < 4; a++) {
+	for (var b = 0; b < 13; b++) {
+		deck.push(ranks[b] + suits[a]);
 	}
 }
 
-var randomint, display;
+var player_hand = [], randomint;
+
+function add_to_playerhand(card_amount) {
+	randomint = getRandomInt(0, deck.length)
+	player_hand[card_amount] = deck[randomint]
+	deck.splice(randomint, 1)
+}
+
 function begin() {
-	randomint = getRandomInt(0, cards.length);
-	player_cards[0] = cards[randomint];
-	cards.splice(randomint, 1)
-	randomint = getRandomInt(0, cards.length);
-	player_cards[1] = cards[randomint];
-	cards.splice(randomint, 1)
-	display = 'Your cards are ' + player_cards[0] + ' and ' + player_cards[1] + '.';
-	box.textContent = display;
-	debug.textContent = cards
+	add_to_playerhand(0)
+	add_to_playerhand(1)
+	box.textContent = player_hand;
+	debug.textContent = deck;
 }
 Begin.onclick = begin;
 </script>
