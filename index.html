@@ -6,8 +6,11 @@
 </head>
 
 <style>
-h1, p {
+h1, p, textarea {
     font-family: Arial, Arial, Helvetica, sans-serif;
+}
+textarea {
+	font-size: 50px;
 }
 h1 {
     color: #333333;
@@ -27,14 +30,29 @@ body {
 
 <body>
 <div><h1>Blackjack!</h1></div>
-<button id = "Begin">Begin</button>
+<button id = "Begin">Begin</button><br>
 <textarea id="box">Click Begin to play!</textarea>
 </body>
 
 
 <script>
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+var player_cards = []
+
+var a, b, c;
+for (a = 1; a < 14; a++) {
+	for (b = 1; b < 5; b++) {
+		player_cards.push(a, b, c)
+	}
+}
+
 function begin() {
-	box.textContent = 'Nice';
+	box.textContent = player_cards;
 }
 Begin.onclick = begin;
 </script>
