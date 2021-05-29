@@ -55,19 +55,33 @@ for (var a = 0; a < 4; a++) {
 	}
 }
 
-var player_hand = [], randomint;
+var player_hand = [], randomint, display, sum = 0, d;
 
-function add_to_playerhand(card_amount) {
+function add_to_playerhand() {
 	randomint = getRandomInt(0, deck.length)
-	player_hand[card_amount] = deck[randomint]
+	player_hand.push(deck[randomint])
 	deck.splice(randomint, 1)
 }
 
+function sum_of_playerhand() {
+	for (i = 0; i < player_hand.length; i++) {
+		c = player_hand[i].substring(0, 1)
+		if (c == 'A') {
+			c = 1;
+		} else if (c == 'T' || c == 'J' || c == 'Q' || c == 'K') {
+			c = 10;
+		}
+		sum = sum + parseInt(c, 10);
+	}
+	return sum
+}
+
 function begin() {
-	add_to_playerhand(0)
-	add_to_playerhand(1)
-	box.textContent = player_hand;
-	debug.textContent = deck;
+	add_to_playerhand()
+	add_to_playerhand()
+	display = 'Your cards are ' + player_hand[0] + ' and ' + player_hand[1] + '. The sum of your cards is: ' + sum_of_playerhand() + '.';
+	box.textContent = display;
+	debug.textContent = ''
 }
 Begin.onclick = begin;
 </script>
