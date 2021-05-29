@@ -10,7 +10,7 @@ h1, p, textarea {
     font-family: Arial, Arial, Helvetica, sans-serif;
 }
 textarea {
-	font-size: 50px;
+	font-size: 25px;
 }
 h1 {
     color: #333333;
@@ -44,10 +44,35 @@ function getRandomInt(min, max) {
 
 var player_cards = []
 
-var a, b, c;
+var a, b, c, d, e, f;
 for (a = 1; a < 14; a++) {
 	for (b = 1; b < 5; b++) {
-		player_cards.push(a, b, c)
+		if (a == 1) {
+			c = 'Ace';
+		} else if (a == 11) {
+			c = 'Jack';
+		} else if (a == 12) {
+			c = 'Queen';
+		} else if (a == 13) {
+			c = 'King';
+		} else {
+			c = a;
+		}
+		if (b == 1) {
+			d = ' of Spades';
+		} else if (b == 2) {
+			d = ' of Hearts';
+		} else if (b == 3) {
+			d = ' of Diamonds';
+		} else if (b == 4) {
+			d = ' of Clubs';
+		}
+		f = a
+		if (a > 10) {
+			f = 10
+		}
+		e = c + d
+		player_cards.push(a, b, e, '(' + f + ')','|')
 	}
 }
 
