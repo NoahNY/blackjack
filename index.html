@@ -31,7 +31,8 @@ body {
 <body>
 <div><h1>Blackjack!</h1></div>
 <button id = "Begin">Begin</button><br>
-<textarea id="box">Click Begin to play!</textarea>
+<textarea id="box">Click Begin to play!</textarea><br>
+<textarea id="debug">...</textarea>
 </body>
 
 
@@ -42,42 +43,26 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-var player_cards = []
+var cards = [], player_cards = [];
 
-var a, b, c, d, e, f;
+var a, b;
 for (a = 1; a < 14; a++) {
 	for (b = 1; b < 5; b++) {
-		if (a == 1) {
-			c = 'Ace';
-		} else if (a == 11) {
-			c = 'Jack';
-		} else if (a == 12) {
-			c = 'Queen';
-		} else if (a == 13) {
-			c = 'King';
-		} else {
-			c = a;
-		}
-		if (b == 1) {
-			d = ' of Spades';
-		} else if (b == 2) {
-			d = ' of Hearts';
-		} else if (b == 3) {
-			d = ' of Diamonds';
-		} else if (b == 4) {
-			d = ' of Clubs';
-		}
-		f = a
-		if (a > 10) {
-			f = 10
-		}
-		e = c + d
-		player_cards.push(a, b, e, '(' + f + ')','|')
+		cards.push([a, b])
 	}
 }
 
+var randomint, display;
 function begin() {
-	box.textContent = player_cards;
+	randomint = getRandomInt(0, cards.length);
+	player_cards[0] = cards[randomint];
+	cards.splice(randomint, 1)
+	randomint = getRandomInt(0, cards.length);
+	player_cards[1] = cards[randomint];
+	cards.splice(randomint, 1)
+	display = 'Your cards are ' + player_cards[0] + ' and ' + player_cards[1] + '.';
+	box.textContent = display;
+	debug.textContent = cards
 }
 Begin.onclick = begin;
 </script>
