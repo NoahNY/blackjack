@@ -12,7 +12,10 @@ h1, p, textarea {
 textarea {
 	font-size: 25px;
 	width: 500px;
-	height: 250px;
+	height: 125px;
+}
+button {
+	font-size: 20px;
 }
 h1 {
     color: #333333;
@@ -31,8 +34,9 @@ body {
 </style>
 
 <body>
-<div><h1>Blackjack!</h1></div>
+<div><h1>Blackjack!</h1></div><br>
 <button id = "Begin">Begin</button><br>
+<button id = "Hit">Hit</button><button id = "Stand">Stand</button><br>
 <textarea id="box">Click Begin to play!</textarea><br>
 <textarea id="debug">debug...</textarea><br>
 </body>
@@ -55,7 +59,7 @@ for (var a = 0; a < 4; a++) {
 	}
 }
 
-var player_hand = [], randomint, display, sum = 0, d;
+var player_hand = [], randomint, display, sum = 0, d, begun = false;
 
 function add_to_playerhand() {
 	randomint = getRandomInt(0, deck.length)
@@ -64,6 +68,7 @@ function add_to_playerhand() {
 }
 
 function sum_of_playerhand() {
+	sum = 0;
 	for (i = 0; i < player_hand.length; i++) {
 		c = player_hand[i].substring(0, 1)
 		if (c == 'A') {
@@ -77,12 +82,22 @@ function sum_of_playerhand() {
 }
 
 function begin() {
-	add_to_playerhand()
-	add_to_playerhand()
-	display = 'Your cards are ' + player_hand[0] + ' and ' + player_hand[1] + '. The sum of your cards is: ' + sum_of_playerhand() + '.';
-	box.textContent = display;
-	debug.textContent = ''
+	if (begun == false) {
+		add_to_playerhand()
+		add_to_playerhand()
+		display = 'Your cards are ' + player_hand + '.\nThe sum of your cards is: ' + sum_of_playerhand() + '.';
+		box.textContent = display;
+		debug.textContent = deck;
+		begun = true;
+	}
 }
+function hit() {
+	add_to_playerhand()
+	display = 'Your cards are now: ' + player_hand;
+	box.textContent = display;
+	debug.textContent = deck;
+}
+Hit.onclick = hit;
 Begin.onclick = begin;
 </script>
 
