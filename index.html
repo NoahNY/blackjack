@@ -9,9 +9,17 @@
 h1, p, textarea {
     font-family: Arial, Arial, Helvetica, sans-serif;
 }
+p {
+	color: #333333;
+	font-weight: bold;
+    border: 3px solid #DDDDDD;
+    background-color: #ddbf00;
+    margin: margin-left;
+    width: 160px;
+}
 textarea {
 	font-size: 25px;
-	width: 500px;
+	width: 320px;
 	height: 125px;
 }
 button {
@@ -35,10 +43,12 @@ body {
 
 <body>
 <div><h1>Blackjack!</h1></div><br>
-<button id = "Begin">Begin</button><br>
-<button id = "Hit">Hit</button><button id = "Stand">Stand</button><br>
-<textarea id="box">Click Begin to play!</textarea><br>
-<textarea id="debug">debug...</textarea><br>
+<button id="Begin">Begin</button><br><br>
+<button id="Hit">Hit</button><button id = "Stand">Stand</button><br>
+<button id="Sum">Sum</button><button id="Display">Display Cards</button><br>
+<p>Terminal:</p>
+<textarea id="box">Click 'Begin' to play!</textarea><br>
+<textarea id="debug">debug...</textarea>
 </body>
 
 
@@ -66,7 +76,6 @@ function add_to_playerhand() {
 	player_hand.push(deck[randomint])
 	deck.splice(randomint, 1)
 }
-
 function sum_of_playerhand() {
 	sum = 0;
 	for (i = 0; i < player_hand.length; i++) {
@@ -80,23 +89,38 @@ function sum_of_playerhand() {
 	}
 	return sum
 }
-
 function begin() {
 	if (begun == false) {
 		add_to_playerhand()
 		add_to_playerhand()
-		display = 'Your cards are ' + player_hand + '.\nThe sum of your cards is: ' + sum_of_playerhand() + '.';
+		display = 'Your cards are: \n' + player_hand;
 		box.textContent = display;
 		debug.textContent = deck;
 		begun = true;
 	}
 }
 function hit() {
-	add_to_playerhand()
-	display = 'Your cards are now: ' + player_hand;
-	box.textContent = display;
-	debug.textContent = deck;
+	if (begun == true) {
+		add_to_playerhand()
+		display = 'Your cards are now: ' + player_hand;
+		box.textContent = display;
+		debug.textContent = deck;
+	}
 }
+function sumcards() {
+	if (begun == true) {
+		display = 'The sum of your cards is: ' + sum_of_playerhand();
+		box.textContent = display;
+	}
+}
+function display() {
+	if (begun == true) {
+		display = 'Your cards are: \n' + player_hand;
+		box.textContent = display;
+	}
+}
+Display.onclick = display;
+Sum.onclick = sumcards;
 Hit.onclick = hit;
 Begin.onclick = begin;
 </script>
