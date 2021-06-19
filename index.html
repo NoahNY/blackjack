@@ -69,7 +69,7 @@ for (var a = 0; a < 4; a++) {
 	}
 }
 
-var player_hand = [], randomint, display, sum = 0, d, begun = false;
+var player_hand = [], randomint, display, sum = 0, d, begun = false, lost = false;
 
 function add_to_playerhand() {
 	randomint = getRandomInt(0, deck.length)
@@ -100,9 +100,15 @@ function begin() {
 	}
 }
 function hit() {
-	if (begun == true) {
+	if (begun == true && lost == false) {
 		add_to_playerhand()
-		display = 'Your cards are now: ' + player_hand;
+		sum_of_playerhand()
+		if (sum > 21) {
+			display = 'Your cards are: ' + player_hand + '\nThe sum is greater than 21. You lose!'
+			lost = true;
+		} else {
+			display = 'Your cards are now: ' + player_hand;
+		}
 		box.textContent = display;
 		debug.textContent = deck;
 	}
