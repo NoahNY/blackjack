@@ -87,7 +87,10 @@ function getRandomInt(min, max) {
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min) + min);
 }
-var player0_hand = [], ai_hand = [], randomint, randomint2, display, sum = 0, d, begun = false, lost = false, ai_lost = false;
+
+//Variables
+var player0_hand = [], ai_hand = [], randomint, randomint2, display, sum = 0, d;
+var begun = false, lost = false, ai_lost = false, displaying_cards = false, summing_cards = false;
 var suits = ['♠', '♥', '♣', '♦'];
 var ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
 var deck = [];
@@ -137,22 +140,36 @@ function hit() {
 			display = 'Your cards are: ' + player0_hand + '\nThe sum is greater than 21. You lose!'
 			lost = true;
 		} else {
-			display = 'Your cards are now: ' + player0_hand;
+			display = 'Your cards are: ' + player0_hand;
 		}
 		box.textContent = display;
 		debug.textContent = deck;
+	} else if (begun == false) {
+		alert('Press "Begin" to play')
 	}
 }
 function sumcards() {
-	if (begun == true) {
+	if (begun == true && summing_cards == false) {
 		display = 'The sum of your cards is: ' + sum_of_playerhand();
 		box.textContent = display;
+		summing_cards = true;
+		displaying_cards = false;
+	} else if (begun == true && summing_cards == true) {
+		alert('You are already looking at the sum of your cards!')
+	} else if (begun == false) {
+		alert('Press "Begin" to play')
 	}
 }
 function display() {
-	if (begun == true) {
+	if (begun == true && displaying_cards == false) {
 		display = 'Your cards are: \n' + player0_hand;
 		box.textContent = display;
+		summing_cards = false;
+		displaying_cards = true;
+	} else if (begun == true && displaying_cards == true) {
+		alert('You are already looking at your cards!')
+	} else if (begun == false) {
+		alert('Press "Begin" to play')
 	}
 }
 Display.onclick = display;
@@ -186,6 +203,8 @@ function ai_turn() {
 			if (sum >= 21) {
 				ai_lost = true;
 			}
+	} else if (begun == false) {
+		alert('Press "Begin" to play')
 	}
 }
 function hit_or_stand() {
@@ -194,10 +213,10 @@ function hit_or_stand() {
 	debug1.textContent = 'Sum = ' + sum + '\nCards = ' + ai_hand + '\n' + chance + '\n' + randomint2;
 		if (chance >= 10) {
 			add_to_aihand()
-			setTimeout(() => {ai_turn()}, 4000);
+			setTimeout(() => {ai_turn()}, 1000);
 		} else {
 			if (chance >= randomint2 && ai_lost == false) {
-				setTimeout(() => {ai_turn()}, 4000);
+				setTimeout(() => {ai_turn()}, 1000);
 				add_to_aihand()
 				debug1.textContent = 'Sum = ' + sum + '\nCards = ' + ai_hand + '\n' + chance + '\n' + randomint2;
 			}
