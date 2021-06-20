@@ -87,7 +87,7 @@ function getRandomInt(min, max) {
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min) + min);
 }
-var player0_hand = [], ai_hand = [], randomint, display, sum = 0, d, begun = false, lost = false, position = 0;
+var player0_hand = [], ai_hand = [], randomint, randomint2, display, sum = 0, d, begun = false, lost = false, ai_lost = false;
 var suits = ['♠', '♥', '♣', '♦'];
 var ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
 var deck = [];
@@ -180,23 +180,29 @@ function sum_of_aihand() {
 	return sum
 }
 function ai_turn() {
-	if (lost == false) {
+	if (lost == false && ai_lost == false && begun == true) {
 		sum_of_aihand()
 		hit_or_stand()
+			if (sum >= 21) {
+				ai_lost = true;
+			}
 	}
 }
 function hit_or_stand() {
 	chance = 21 - sum
-	debug1.textContent = 'Sum = ' + sum + '\nCards = ' + ai_hand + '\n' + chance;
+	randomint2 = getRandomInt(0, 10)
+	debug1.textContent = 'Sum = ' + sum + '\nCards = ' + ai_hand + '\n' + chance + '\n' + randomint2;
 		if (chance >= 10) {
 			add_to_aihand()
-			setTimeout(() => { ai_turn() }, 1000);
+			setTimeout(() => {ai_turn()}, 4000);
+		} else {
+			if (chance >= randomint2 && ai_lost == false) {
+				setTimeout(() => {ai_turn()}, 4000);
+				add_to_aihand()
+				debug1.textContent = 'Sum = ' + sum + '\nCards = ' + ai_hand + '\n' + chance + '\n' + randomint2;
+			}
 		}
 }
-
-
-
-
 </script>
 
 
