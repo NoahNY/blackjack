@@ -41,20 +41,23 @@ body {
     margin: auto;
     width: 40%;
 }
-.body0{
+.body0 {
 	background-color: #ffffff;
 	width: 17.5%;
 	float: left;
 	margin-left: 320px;
 }
-.body1{
+.body1 {
 	background-color: #ffffff;
 	width: 17.5%;
 	float: right;
 	margin-right: 320px;
 }
-.BeginBtn{
+.BeginBtn {
 	text-align: center;
+}
+#Debug {
+	width: 100%;
 }
 </style>
 
@@ -71,17 +74,17 @@ body {
 	<p>The Player Box</p>
 	<button id="Hit">Hit</button><button id="Stand">Stand</button><br>
 	<button id="Sum">Sum</button><button id="Display">Display Cards</button><br>
-	<textarea id="box" readonly>Click 'Begin' to play!</textarea><br>
-	<textarea id="debug" readonly>debug...</textarea>
+	<textarea id="box" readonly>...</textarea><br>
 </div>
 <div class="body1">
 	<p>The AI Box</p>
 	<button id="Check">Check</button><br>
-	<textarea id="box1" readonly>ai</textarea><br>
-	<textarea id="debug1" readonly>debug...</textarea>
+	<textarea id="box1" readonly>...</textarea><br>
 </div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<button id="DebugBtn">Debug</button>
+<textarea id="Debug" readonly></textarea>
 </body>
-
 <script>
 //Deck Creation Functions:
 function getRandomInt(min, max) {
@@ -89,14 +92,24 @@ function getRandomInt(min, max) {
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min) + min);
 }
-
 //Variables
 var player0_hand = [], ai_hand = [], randomint, randomint2, display, sum = 0, d;
 var begun = false, lost = false, ai_lost = false, displaying_cards = false, summing_cards = false;
 var suits = ['♠', '♥', '♣', '♦'];
 var ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
 var deck = [];
-
+//Debug Function:
+function debug() {
+	sum_of_aihand()
+	sum_of_playerhand()
+	chance_debug = 21-sum_ai
+	if (begun == true) {
+		Debug.textContent = 'The remaining cards in the deck are: \n' + deck + '\nThe player has cards ' + player0_hand + ' with a sum of: ' + sum + '\nThe AI has cards ' + ai_hand + ' with a sum of: ' + sum_ai + '\nThe AI will roll a random whole number between 0 and 10. If that number is less than ' + chance_debug + ', which is 21 minus the AI sum, it will take another card.'
+	} else {
+		alert('Press "Begin" to play')
+	}
+}
+DebugBtn.onclick = debug;
 //Player Functions:
 for (var a = 0; a < 4; a++) {
 	for (var b = 0; b < 13; b++) {
@@ -129,8 +142,6 @@ function begin() {
 		add_to_aihand()
 		display = 'Your cards are: \n' + player0_hand;
 		box.textContent = display;
-		debug.textContent = deck;
-		debug1.textContent = ai_hand;
 		begun = true;
 	}
 }
@@ -145,7 +156,6 @@ function hit() {
 			display = 'Your cards are: ' + player0_hand;
 		}
 		box.textContent = display;
-		debug.textContent = deck;
 	} else if (begun == false) {
 		alert('Press "Begin" to play')
 	}
@@ -199,6 +209,7 @@ function sum_of_aihand() {
 	return sum_ai
 }
 function ai_turn() {
+	box1.textContent = "The AI 'stands'";
 	if (lost == false && ai_lost == false && begun == true) {
 		sum_of_aihand()
 		hit_or_stand()
@@ -210,33 +221,39 @@ function hit_or_stand() {
 	sum_of_aihand()
 	chance = 21 - sum_ai
 	randomint2 = getRandomInt(0, 10)
-	debug1.textContent = 'Sum = ' + sum_ai + '\nCards = ' + ai_hand + '\n' + chance + '\n' + randomint2;
 		if (chance >= 10) {
-			add_to_aihand()
 			setTimeout(() => {ai_turn()}, 1000);
+			box1.textContent = "The AI 'hits'";
+			add_to_aihand()
 		} else {
 			if (chance >= randomint2 && ai_lost == false) {
 				setTimeout(() => {ai_turn()}, 1000);
+				box1.textContent = "The AI 'hits'";
 				add_to_aihand()
-				debug1.textContent = 'Sum = ' + sum_ai + '\nCards = ' + ai_hand + '\n' + chance + '\n' + randomint2;
 			}
 		}
 }
 function check() {
-	if (begun == true) {
-		if (sum_ai > sum) {
-			alert("Player loss. AI card sum was greater than players'!")
-		} else if (sum_ai < sum) {
-			alert("Player win. AI card sum was less than player's!")
-		} else if(sum_ai = sum) {
-			alert("Player tie. AI card sum was equal to player's!")
-		}
+	sum_of_aihand()
+	sum_of_playerhand()
+	box.textContent = "Your cards were " + player0_hand + " with a sum of " + sum;
+	box1.textContent = "The AI's cards were " + ai_hand + " with a sum of " + sum_ai;
+	if (sum_ai > 21) {
+		alert('Player win. AI card sum was over 21!')
 	} else {
-		alert('Please press begin before you play!')
+		if (begun == true) {
+			if (sum_ai > sum) {
+				alert("Player loss. AI card sum was greater than players'!")
+			} else if (sum_ai < sum) {
+				alert("Player win. AI card sum was less than player's!")
+			} else if(sum_ai = sum) {
+				alert("Player tie. AI card sum was equal to player's!")
+			}
+		} else if (begun == false) {
+			alert('Press "Begin" to play')
+		}
 	}
 }
 Check.onclick = check;
 </script>
-
-
 </html>
