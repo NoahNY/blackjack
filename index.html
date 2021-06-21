@@ -94,7 +94,7 @@ function getRandomInt(min, max) {
 }
 //Variables
 var player0_hand = [], ai_hand = [], randomint, randomint2, display, sum = 0, d;
-var begun = false, lost = false, ai_lost = false, displaying_cards = false, summing_cards = false;
+var begun = false, lost = false, ai_lost = false, displaying_cards = false, summing_cards = false, ai_playing = false;
 var suits = ['♠', '♥', '♣', '♦'];
 var ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
 var deck = [];
@@ -104,7 +104,7 @@ function debug() {
 	sum_of_playerhand()
 	chance_debug = 21-sum_ai
 	if (begun == true) {
-		Debug.textContent = 'The remaining cards in the deck are: \n' + deck + '\nThe player has cards ' + player0_hand + ' with a sum of: ' + sum + '\nThe AI has cards ' + ai_hand + ' with a sum of: ' + sum_ai + '\nThe AI will roll a random whole number between 0 and 10. If that number is less than ' + chance_debug + ', which is 21 minus the AI sum, it will take another card.'
+		Debug.textContent = 'The remaining cards in the deck are: \n' + deck + '\nThe PLAYER has cards ' + player0_hand + ' with a sum of: ' + sum + '\nThe AI has cards ' + ai_hand + ' with a sum of: ' + sum_ai + '\nThe AI will roll a random whole number between 0 and 10. If that number is less than ' + chance_debug + ', which is 21 minus the AI sum, it will take another card.'
 	} else {
 		alert('Press "Begin" to play')
 	}
@@ -209,12 +209,15 @@ function sum_of_aihand() {
 	return sum_ai
 }
 function ai_turn() {
+	ai_playing = true;
 	box1.textContent = "The AI 'stands'";
 	if (lost == false && ai_lost == false && begun == true) {
 		sum_of_aihand()
 		hit_or_stand()
 	} else if (begun == false) {
 		alert('Press "Begin" to play')
+	} else if (lost == true) {
+		alert('You lost already...')
 	}
 }
 function hit_or_stand() {
@@ -234,24 +237,28 @@ function hit_or_stand() {
 		}
 }
 function check() {
-	sum_of_aihand()
-	sum_of_playerhand()
-	box.textContent = "Your cards were " + player0_hand + " with a sum of " + sum;
-	box1.textContent = "The AI's cards were " + ai_hand + " with a sum of " + sum_ai;
-	if (sum_ai > 21) {
-		alert('Player win. AI card sum was over 21!')
-	} else {
-		if (begun == true) {
-			if (sum_ai > sum) {
-				alert("Player loss. AI card sum was greater than players'!")
-			} else if (sum_ai < sum) {
-				alert("Player win. AI card sum was less than player's!")
-			} else if(sum_ai = sum) {
-				alert("Player tie. AI card sum was equal to player's!")
+	if (ai_playing == true && lost == false) {
+		sum_of_aihand()
+		sum_of_playerhand()
+		box.textContent = "Your cards were " + player0_hand + " with a sum of " + sum;
+		box1.textContent = "The AI's cards were " + ai_hand + " with a sum of " + sum_ai;
+		if (sum_ai > 21) {
+			alert('Player win. AI card sum was over 21!')
+		} else {
+			if (begun == true) {
+				if (sum_ai > sum) {
+					alert("Player loss. AI card sum was greater than players'!")
+				} else if (sum_ai < sum) {
+					alert("Player win. AI card sum was less than player's!")
+				} else if(sum_ai = sum) {
+					alert("Player tie. AI card sum was equal to player's!")
+				} else if (begun == false) {
+					alert('Press "Begin" to play')
+				}
 			}
-		} else if (begun == false) {
-			alert('Press "Begin" to play')
 		}
+	} else {
+		alert('You already lost...')
 	}
 }
 Check.onclick = check;
